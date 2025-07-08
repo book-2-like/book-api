@@ -18,10 +18,6 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    // TODO 기능 구현 모두 완료 후, 요구사항 확인 후 수정
-    // TODO API, Entity(varchar)와 일치하는지 확인 수정
-    // TODO Validated 예외처리
-    // 썌
     // create
     @PostMapping("/books/{bookId}/comments")
     public ResponseEntity<ApiResponse<CommentResponseDto>> createComment(@PathVariable Long bookId,
@@ -35,7 +31,7 @@ public class CommentController {
     }
 
     // read
-    @GetMapping("/api/v1/books/{bookId}/comments")
+    @GetMapping("/books/{bookId}/comments")
     public ResponseEntity<ApiResponse<List<CommentResponseDto>>> getComments(@PathVariable Long bookId) {
 
         // TODO 인가 처리
