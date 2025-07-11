@@ -44,6 +44,7 @@ public class Log {
     private LocalDateTime createdAt;
 
 
+    // 가독성과 유연한 객체 생성을 위해 Builder 어노테이션 사용
     @Builder
     public Log(
             Long userId,
