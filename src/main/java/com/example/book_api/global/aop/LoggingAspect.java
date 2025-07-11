@@ -44,28 +44,23 @@ public class LoggingAspect {
                 .userId(LogInfoExtractor.extractUserId(request, this.jwtUtil))
                 .targetType(LogInfoExtractor.extractTargetType(request.getRequestURI()));
 
-        try {
-            Object result = joinPoint.proceed();
+        Object result = joinPoint.proceed();
 
-            if (result instanceof ResponseEntity<?> responseEntity) {
+        if (result instanceof ResponseEntity<?> responseEntity) {
 
-                logBuilder.statusCode(LogInfoExtractor.extractStatusCode(result));
-                logBuilder.targetId(LogInfoExtractor.extractTargetId(responseEntity, request));
+            logBuilder.statusCode(LogInfoExtractor.extractStatusCode(result));
+            logBuilder.targetId(LogInfoExtractor.extractTargetId(responseEntity, request));
 
-            } else {
-                logBuilder.statusCode(200);
-            }
-
-            logBuilder.message("성공");
-
-            logService.saveLog(logBuilder.build());
-            log.info("Success Logged: {}", logBuilder.build().toString());
-
-            return result;
-
-        } catch (Exception e) {
-            throw e;
+        } else {
+            logBuilder.statusCode(200);
         }
+
+        logBuilder.message("성공");
+
+        logService.saveLog(logBuilder.build());
+        log.info("Success Logged: {}", logBuilder.build().toString());
+
+        return result;
 
     }
 
