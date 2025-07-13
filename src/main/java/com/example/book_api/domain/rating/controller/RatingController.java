@@ -1,5 +1,6 @@
 package com.example.book_api.domain.rating.controller;
 
+import com.example.book_api.domain.log.enums.ActivityType;
 import com.example.book_api.domain.rating.dto.request.RatingRequestDto;
 import com.example.book_api.domain.rating.dto.response.AverageRatingResponse;
 import com.example.book_api.domain.rating.dto.response.MyRatingResponse;
@@ -8,6 +9,7 @@ import com.example.book_api.domain.rating.dto.response.TopRatedBookResponse;
 import com.example.book_api.domain.rating.service.RatingService;
 import com.example.book_api.domain.auth.annotation.Auth;
 import com.example.book_api.domain.auth.dto.AuthUser;
+import com.example.book_api.global.annotation.Logging;
 import com.example.book_api.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class RatingController {
 
     private final RatingService ratingService;
 
+    @Logging(activityType = ActivityType.RATING_CREATED)
     @PostMapping("/books/{bookId}/ratings")
     public ResponseEntity<ApiResponse<Object>> createRating(@PathVariable Long bookId,
                                                             @Valid @RequestBody RatingRequestDto request,
@@ -32,6 +35,7 @@ public class RatingController {
         return ApiResponse.success(HttpStatus.CREATED, "평점 등록이 완료되었습니다.", null);
     }
 
+    @Logging(activityType = ActivityType.RATING_UPDATED)
     @PatchMapping("/books/{bookId}/ratings")
     public ResponseEntity<ApiResponse<Object>> updateRating(@PathVariable Long bookId,
                              @Valid @RequestBody RatingRequestDto request,
@@ -40,6 +44,7 @@ public class RatingController {
         return ApiResponse.success(HttpStatus.OK, "평점 수정이 완료되었습니다.", null);
     }
 
+    @Logging(activityType = ActivityType.RATING_DELETED)
     @DeleteMapping("/books/{bookId}/ratings")
     public ResponseEntity<ApiResponse<Object>> deleteRating(@PathVariable Long bookId,
                              @Auth AuthUser authUser) {
