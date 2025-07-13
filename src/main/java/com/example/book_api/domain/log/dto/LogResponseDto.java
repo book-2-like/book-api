@@ -4,10 +4,12 @@ import com.example.book_api.domain.log.enums.ActivityType;
 import com.example.book_api.domain.log.enums.RequestMethod;
 import com.example.book_api.domain.log.enums.TargetType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class LogResponseDto {
     private Long id;
 

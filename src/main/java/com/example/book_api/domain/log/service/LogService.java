@@ -32,6 +32,7 @@ public class LogService {
         logRepository.save(log);
     }
 
+
     /**
      * 저장된 로그를 조회하는 기능
      *

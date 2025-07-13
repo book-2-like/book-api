@@ -3,8 +3,6 @@ package com.example.book_api.domain.log.entity;
 import com.example.book_api.domain.log.enums.ActivityType;
 import com.example.book_api.domain.log.enums.RequestMethod;
 import com.example.book_api.domain.log.enums.TargetType;
-import com.example.book_api.domain.user.entity.User;
-import com.example.book_api.domain.user.service.UserService;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
