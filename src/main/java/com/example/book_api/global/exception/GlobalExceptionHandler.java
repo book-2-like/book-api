@@ -72,7 +72,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-
     // 예상치 못한 전체 예외 (최후의 보루)
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<ApiResponse<Void>> handleGenericException() {
