@@ -4,6 +4,7 @@ import com.example.book_api.domain.log.dto.LogRequestDto;
 import com.example.book_api.domain.log.dto.LogResponseDto;
 import com.example.book_api.domain.log.entity.Log;
 import com.example.book_api.domain.log.repository.LogRepository;
+import com.example.book_api.global.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,14 +46,14 @@ public class LogService {
      * @param endAt 종료일 검색
      * @return 페이징 처리된 응답 Dto
      */
-    public Page<LogResponseDto> getLogs(int page, int size,
-                                        Long userId, String targetType, String startAt, String endAt) {
+    public PagedResponse<LogResponseDto> getLogs(int page, int size,
+                                                 Long userId, String targetType, String startAt, String endAt) {
         LogRequestDto requestDto = new LogRequestDto(userId, targetType, startAt, endAt);
 
         Pageable pageable = PageRequest.of(page-1, size);
         Page<Log> logs = logRepository.findByFilter(requestDto, pageable);
 
-        return logs.map(log -> new LogResponseDto(
+        Page<LogResponseDto> dtoPage = logs.map(log -> new LogResponseDto(
                 log.getId(),
                 log.getUserId(),
                 log.getTargetType(),
@@ -64,5 +65,7 @@ public class LogService {
                 log.getMessage(),
                 log.getCreatedAt()
         ));
+
+        return PagedResponse.toPagedResponse(dtoPage);
     }
 }

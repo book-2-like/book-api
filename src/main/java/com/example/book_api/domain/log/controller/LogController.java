@@ -3,6 +3,7 @@ package com.example.book_api.domain.log.controller;
 import com.example.book_api.domain.log.dto.LogResponseDto;
 import com.example.book_api.domain.log.service.LogService;
 import com.example.book_api.global.dto.ApiResponse;
+import com.example.book_api.global.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class LogController {
      * @return 페이징 처리된 응답 Dto
      */
     @GetMapping("/logs")
-    public ResponseEntity<ApiResponse<Page<LogResponseDto>>> getLogs(
+    public ResponseEntity<ApiResponse<PagedResponse<LogResponseDto>>> getLogs(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) Long userId,
@@ -46,7 +47,7 @@ public class LogController {
             @RequestParam(required = false) String endAt
     ) {
 
-        Page<LogResponseDto> logs = logService.getLogs(page, size, userId, targetType, startAt, endAt);
+        PagedResponse<LogResponseDto> logs = logService.getLogs(page, size, userId, targetType, startAt, endAt);
 
         return ApiResponse.success(
                 HttpStatus.OK, "로그 조회가 완료되었습니다.", logs);
