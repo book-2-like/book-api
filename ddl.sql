@@ -50,6 +50,18 @@ CREATE TABLE book_views (
 
 ) COMMENT = '책 조회수 Table';
 
+CREATE TABLE book_keywords (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '책 조회수 ID (PK)',
+    keyword VARCHAR(50) NOT NULL COMMENT '검색어',
+
+    user_id BIGINT NOT NULL COMMENT '유저 ID (FK)',
+
+    created_at DATETIME COMMENT '생성일',
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+
+) COMMENT = '책 검색어 Table';
+
 -- 책 평점(book_rating) 테이블 생성
 CREATE TABLE book_rating (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '책 평점 ID (PK)',
@@ -92,8 +104,9 @@ CREATE TABLE logs (
     target_id BIGINT NOT NULL COMMENT '대상 id',
     request_method VARCHAR(255) COMMENT '요청 http 메서드',
     request_uri VARCHAR(255) COMMENT '요청 api 엔드포인트',
+    activity_type VARCHAR(255) COMMENT '활동 타입',
+    status_code INT COMMENT '활동 타입',
     message VARCHAR(255) COMMENT '메세지',
-    is_success BOOLEAN COMMENT '성공 여부',
 
     user_id BIGINT NOT NULL COMMENT '유저 ID (FK)',
 

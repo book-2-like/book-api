@@ -2,6 +2,7 @@ package com.example.book_api.global.exception;
 
 import com.example.book_api.domain.book.exception.BookException;
 import com.example.book_api.domain.comment.exception.CommentException;
+import com.example.book_api.domain.rating.exception.RatingException;
 import com.example.book_api.domain.user.exception.UserException;
 import com.example.book_api.global.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,12 @@ public class GlobalExceptionHandler {
     // Comment
     @ExceptionHandler(CommentException.class)
     public ResponseEntity<ApiResponse<Void>> handleCommentException(CommentException ex) {
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // Rating
+    @ExceptionHandler(RatingException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCommentException(RatingException ex) {
         return ApiResponse.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

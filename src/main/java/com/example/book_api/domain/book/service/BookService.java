@@ -106,10 +106,13 @@ public class BookService {
             @CacheEvict(value = "bookTop", allEntries = true),
             @CacheEvict(value = "books", allEntries = true),
     })
+    @Transactional
     public BookResponseDto update(Long id, BookUpdateRequestDto requestDto) {
         Book findBook = getBookById(id);
 
         findBook.updatePost(requestDto);
+        bookRepository.flush();
+
         return new BookResponseDto(findBook);
     }
 
@@ -124,10 +127,19 @@ public class BookService {
 
     // 책 전체 top 10
     public List<BookResponseDto> getTopBooks() {
-        return bookRepository.findTop10Books()
+
+        long start = System.currentTimeMillis();
+
+        List<BookResponseDto> list = bookRepository.findTop10Books()
                 .stream()
                 .map(BookResponseDto::new)
                 .toList();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println(end - start);
+
+        return list;
     }
 
     // 책 카테고리별 top 10
