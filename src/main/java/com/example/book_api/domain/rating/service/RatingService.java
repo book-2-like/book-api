@@ -15,6 +15,9 @@ import com.example.book_api.domain.user.entity.User;
 import com.example.book_api.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,11 @@ public class RatingService {
     private final BookService bookService;
     private final UserService userService;
 
+    @Caching(evict = {
+            @CacheEvict(value = "averageRating", key = "#bookId"),
+            @CacheEvict(value = "ratingDistribution", key = "#bookId"),
+            @CacheEvict(value = "topRatedBooks", allEntries = true, beforeInvocation = true)
+    })
     @Transactional
     public void createRating(Long bookId, RatingRequestDto request, Long userId) {
         Book book = bookService.getBookById(bookId);
@@ -46,6 +54,11 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "averageRating", key = "#bookId"),
+            @CacheEvict(value = "ratingDistribution", key = "#bookId"),
+            @CacheEvict(value = "topRatedBooks", allEntries = true, beforeInvocation = true)
+    })
     @Transactional
     public void updateRating(Long bookId, RatingRequestDto request, Long userId) {
         Book book = bookService.getBookById(bookId);
@@ -57,6 +70,11 @@ public class RatingService {
         rating.updateScore(request.getScore());
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "averageRating", key = "#bookId"),
+            @CacheEvict(value = "ratingDistribution", key = "#bookId"),
+            @CacheEvict(value = "topRatedBooks", allEntries = true, beforeInvocation = true)
+    })
     @Transactional
     public void deleteRating(Long bookId, Long userId) {
         Book book = bookService.getBookById(bookId);
@@ -80,6 +98,8 @@ public class RatingService {
     }
 
     //책 평점 평균 조회
+
+    @Cacheable(value = "ratingDistribution", key = "#bookId")
     public AverageRatingResponse getAverageRating(Long bookId) {
         Book book = bookService.getBookById(bookId);
 
@@ -90,12 +110,14 @@ public class RatingService {
     }
 
     //책 평점 분포 조회
+    @Cacheable(value = "averageRating", key = "#bookId")
     public List<RatingDistributionResponse> getRatingDistribution(Long bookId) {
         Book book = bookService.getBookById(bookId);
         return ratingRepository.countGroupByScore(book);
     }
 
     //평점 높은 순 top 10
+    @Cacheable(value = "topRatedBooks")
     public List<TopRatedBookResponse> getTop10RatedBooks() {
         return ratingRepository.findTop10BooksByAverageScore(PageRequest.of(0, 10));
     }
