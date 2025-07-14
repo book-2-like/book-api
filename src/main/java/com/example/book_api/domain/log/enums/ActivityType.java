@@ -2,6 +2,9 @@ package com.example.book_api.domain.log.enums;
 
 import lombok.Getter;
 
+/**
+ * 시스템의 주요 활동 유형을 정의하는 enum
+ */
 @Getter
 public enum ActivityType {
     EXCEPTION("예외 발생"),

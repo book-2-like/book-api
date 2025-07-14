@@ -3,8 +3,6 @@ package com.example.book_api.domain.log.entity;
 import com.example.book_api.domain.log.enums.ActivityType;
 import com.example.book_api.domain.log.enums.RequestMethod;
 import com.example.book_api.domain.log.enums.TargetType;
-import com.example.book_api.domain.user.entity.User;
-import com.example.book_api.domain.user.service.UserService;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "logs")
-@ToString
+@ToString(exclude = "id")
 @NoArgsConstructor
 public class Log {
     @Id
@@ -44,6 +42,7 @@ public class Log {
     private LocalDateTime createdAt;
 
 
+    // 가독성과 유연한 객체 생성을 위해 Builder 어노테이션 사용
     @Builder
     public Log(
             Long userId,

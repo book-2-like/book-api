@@ -1,9 +1,6 @@
 package com.example.book_api.domain.log.dto;
 
-import com.example.book_api.domain.log.enums.TargetType;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class LogRequestDto {
@@ -17,9 +14,5 @@ public class LogRequestDto {
         this.targetType = targetType;
         this.startAt = startAt;
         this.endAt = endAt;
-    }
-
-    public void dateConvert(String startAt, String endAt) {
-
     }
 }

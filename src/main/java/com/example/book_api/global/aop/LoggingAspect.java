@@ -15,6 +15,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+/**
+ * 로그 저장 aop
+ */
 @Slf4j
 @Aspect
 @Component
@@ -24,6 +27,10 @@ public class LoggingAspect {
     private final LogService logService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * 응답 성공 시 로그를 저장하는 AOP
+     * (컨트롤러 계층에 적용)
+     */
     @Around("@annotation(logging) && !within(com.example.book_api.global.exception..*)")
     public Object logActivity(ProceedingJoinPoint joinPoint, Logging logging) throws Throwable {
 
@@ -37,30 +44,30 @@ public class LoggingAspect {
                 .userId(LogInfoExtractor.extractUserId(request, this.jwtUtil))
                 .targetType(LogInfoExtractor.extractTargetType(request.getRequestURI()));
 
-        try {
-            Object result = joinPoint.proceed();
+        Object result = joinPoint.proceed();
 
-            if (result instanceof ResponseEntity<?> responseEntity) {
+        if (result instanceof ResponseEntity<?> responseEntity) {
 
-                logBuilder.statusCode(LogInfoExtractor.extractStatusCode(result));
-                logBuilder.targetId(LogInfoExtractor.extractTargetId(responseEntity, request));
+            logBuilder.statusCode(LogInfoExtractor.extractStatusCode(result));
+            logBuilder.targetId(LogInfoExtractor.extractTargetId(responseEntity, request));
 
-            } else {
-                logBuilder.statusCode(200);
-            }
-
-            logBuilder.message("성공");
-
-            logService.saveLog(logBuilder.build());
-            log.info("Success Logged: {}", logBuilder.build().toString());
-
-            return result;
-
-        } catch (Exception e) {
-            throw e;
+        } else {
+            logBuilder.statusCode(200);
         }
+
+        logBuilder.message("성공");
+
+        logService.saveLog(logBuilder.build());
+        log.info("Success Logged: {}", logBuilder.build().toString());
+
+        return result;
+
     }
 
+    /**
+     * 예외 발생 시 로그를 저장하는 AOP
+     * (GlobalExceptionHandler에서 처리하는 예외만 로그에 저장됨)
+     */
     @Around("within(com.example.book_api.global.exception..*)")
     public Object logActivityFailure(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = LogInfoExtractor.getCurrentRequest();
