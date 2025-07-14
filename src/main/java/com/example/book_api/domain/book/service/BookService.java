@@ -72,7 +72,7 @@ public class BookService {
         if(bookKeyword == null) {
             books = bookRepository.findAll(pageable);
         } else {
-            books = qBookRepository.searchAllFields(keyword, pageable);
+            books = bookRepository.searchAllFields(keyword, pageable);
         }
 
         return PagedResponse.toPagedResponse(books.map(BookResponseDto::new));
