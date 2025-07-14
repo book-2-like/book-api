@@ -127,19 +127,10 @@ public class BookService {
 
     // 책 전체 top 10
     public List<BookResponseDto> getTopBooks() {
-
-        long start = System.currentTimeMillis();
-
-        List<BookResponseDto> list = bookRepository.findTop10Books()
+        return bookRepository.findTop10Books()
                 .stream()
                 .map(BookResponseDto::new)
                 .toList();
-
-        long end = System.currentTimeMillis();
-
-        System.out.println(end - start);
-
-        return list;
     }
 
     // 책 카테고리별 top 10
