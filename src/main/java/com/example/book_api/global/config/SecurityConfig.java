@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/health").permitAll()
                         .requestMatchers("/v1/auth/**").permitAll()
                         .requestMatchers("/v1/admin/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/v1/logs/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/v1/books/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, "/v1/books/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/v1/books/**").hasRole(Role.ADMIN.name())

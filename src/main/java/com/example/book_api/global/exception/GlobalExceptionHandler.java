@@ -2,6 +2,7 @@ package com.example.book_api.global.exception;
 
 import com.example.book_api.domain.book.exception.BookException;
 import com.example.book_api.domain.comment.exception.CommentException;
+import com.example.book_api.domain.log.exception.LogException;
 import com.example.book_api.domain.user.exception.UserException;
 import com.example.book_api.global.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CommentException.class)
     public ResponseEntity<ApiResponse<Void>> handleCommentException(CommentException ex) {
         return ApiResponse.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // Log
+    @ExceptionHandler(LogException.class)
+    public ResponseEntity<ApiResponse<Void>> handleGenericException(LogException e) {
+        String message = "로그 저장 중 서버 내부 오류가 발생했습니다.";
+        return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
 
