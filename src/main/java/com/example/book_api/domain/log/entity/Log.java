@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "logs")
-@ToString
+@ToString(exclude = "id")
 @NoArgsConstructor
 public class Log {
     @Id
