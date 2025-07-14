@@ -8,6 +8,7 @@ import com.example.book_api.domain.book.enums.AgeGroup;
 import com.example.book_api.domain.book.enums.CategoryEnum;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -59,14 +60,14 @@ public class QBookRepository {
         LocalDate minBirth = LocalDate.of(minYear, 1, 1);
         LocalDate maxBirth = LocalDate.of(maxYear, 12, 31);
 
-        return queryFactory.select(book)
-                .from(bookView)
-                .rightJoin(bookView.book, book)
-                .join(bookView.user, user)
-                .where(user.birth.between(minBirth, maxBirth))
-                .groupBy(book)
-                .where()
-                .orderBy(bookView.count().desc())
+        return queryFactory
+                .select(book)
+                .from(book)
+                .leftJoin(bookView).on(bookView.book.eq(book))
+                .leftJoin(bookView.user, user)
+                .where(user.birth.between(minBirth, maxBirth).or(user.id.isNull()))
+                .groupBy(book.id)
+                .orderBy(bookView.id.count().coalesce(0L).desc())
                 .limit(10)
                 .fetch();
     }

@@ -106,10 +106,13 @@ public class BookService {
             @CacheEvict(value = "bookTop", allEntries = true),
             @CacheEvict(value = "books", allEntries = true),
     })
+    @Transactional
     public BookResponseDto update(Long id, BookUpdateRequestDto requestDto) {
         Book findBook = getBookById(id);
 
         findBook.updatePost(requestDto);
+        bookRepository.flush();
+
         return new BookResponseDto(findBook);
     }
 
