@@ -101,4 +101,6 @@ CREATE INDEX idx_book_view_book_id_id ON book_view(book_id, id);
 
 ## 문제 해결 (트러블 슈팅)
 - [[Spring] Log Aspect 기능 구현 과정 트러블슈팅](https://hyeonha.tistory.com/43)
+- [@Cacheable 사용 시 역직렬화 오류 해결](https://gajicoding.tistory.com/398)
+- [context-path와 Security: 예상과 다른 경로 매칭 문제](https://gajicoding.tistory.com/399)
 
