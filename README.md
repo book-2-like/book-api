@@ -13,6 +13,10 @@
 - N+1 방지 기능 도입
 - GitHub Actions + Docker + EC2 기반 배포 자동화 구성
 
+<br>
+
+## 개발 환경
+
 | **분야** | **기술 스택** |
 | --- | --- |
 | **Language** | Java 17 |
@@ -23,6 +27,8 @@
 | **Infra** | Docker, AWS EC2, RDS (MySQL) |
 | **CI/CD** | GitHub Actions |
 | **Testing** | JUnit5, Spring Boot Test |
+
+<br>
 
 ## 배포 (AWS EC2)
 [✔️] health check API: [http://ec2-15-164-226-99.ap-northeast-2.compute.amazonaws.com:8080/api/health](http://ec2-15-164-226-99.ap-northeast-2.compute.amazonaws.com:8080/api/health)
